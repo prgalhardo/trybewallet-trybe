@@ -11,10 +11,12 @@ class Header extends Component {
           Usuário:
           { userEmail }
         </span>
+        <br />
         <span data-testid="total-field">
           Total de Despesas:
           0
         </span>
+        <br />
         <span data-testid="header-currency-field">
           Moeda atual:
           BRL

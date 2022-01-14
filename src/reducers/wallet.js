@@ -3,7 +3,20 @@
 import { TOTAL_WALLET_EXPENSE, CURRENT_CURRENCY } from '../actions';
 
 const INITIAL_STATE = {
-  currencies: [],
+  currencies: ['USD',
+    'CAD',
+    'EUR',
+    'GBP',
+    'ARS',
+    'BTC',
+    'LTC',
+    'JPY',
+    'CHF',
+    'AUD',
+    'CNY',
+    'ILS',
+    'ETH',
+    'XRP'],
   expenses: [],
 
 };
