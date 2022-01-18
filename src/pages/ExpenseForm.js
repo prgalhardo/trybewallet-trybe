@@ -5,6 +5,7 @@ import { currentCurrency, getCurrentCurrency } from '../actions';
 import Table from './Table';
 
 // Agradecimento à Eduardo Miyazaki e João Spinelli com os requisitos 4 e 5.
+const food = 'Alimentação';
 
 class ExpenseForm extends Component {
   constructor() {
@@ -15,7 +16,7 @@ class ExpenseForm extends Component {
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
-      tag: '`Alimentação`',
+      tag: food,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -44,7 +45,7 @@ class ExpenseForm extends Component {
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
-      tag: 'Alimentação',
+      tag: food,
     });
   }
 
