@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { currentCurrency, getCurrentCurrency } from '../actions';
+import Table from './Table';
 
 // Agradecimento à Eduardo Miyazaki e João Spinelli com os requisitos 4 e 5.
 
@@ -143,6 +144,7 @@ class ExpenseForm extends Component {
             Adicionar despesa
           </button>
         </form>
+        <Table />
       </div>
     );
   }
