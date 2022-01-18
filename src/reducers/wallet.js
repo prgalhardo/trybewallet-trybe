@@ -3,20 +3,7 @@
 import { TOTAL_WALLET_EXPENSE, CURRENT_CURRENCY } from '../actions';
 
 const INITIAL_STATE = {
-  currencies: ['USD',
-    'CAD',
-    'EUR',
-    'GBP',
-    'ARS',
-    'BTC',
-    'LTC',
-    'JPY',
-    'CHF',
-    'AUD',
-    'CNY',
-    'ILS',
-    'ETH',
-    'XRP'],
+  currencies: [],
   expenses: [],
 
 };
@@ -26,12 +13,12 @@ const wallet = (state = INITIAL_STATE, action) => {
   case TOTAL_WALLET_EXPENSE:
     return {
       ...state,
-      expenses: [action.payload],
+      expenses: [...state.expenses, action.payload],
     };
   case CURRENT_CURRENCY:
     return {
       ...state,
-      currencies: [action.payload],
+      currencies: action.payload,
     };
   default:
     return state;

@@ -1,21 +1,50 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { currentCurrency, getCurrentCurrency } from '../actions';
+
+// Agradecimento à Eduardo Miyazaki e João Spinelli com os requisitos 4 e 5.
 
 class ExpenseForm extends Component {
   constructor() {
     super();
 
     this.state = {
-      value: '',
+      value: 0,
       description: '',
-      currency: '',
-      method: '',
-      tag: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: '`Alimentação`',
     };
 
-    // this.handleChange = this.handleChange.bind(this);
-    // this.handleClick = this.handleClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    const { dispatchCurrentCurrencies } = this.props;
+    dispatchCurrentCurrencies();
+  }
+
+  handleChange({ target }) {
+    const { name, value } = target;
+    this.setState({ [name]: value });
+  }
+
+  handleClick() {
+    const {
+      props: { dispatchSetExpenses, userExpenses },
+    } = this;
+    const id = userExpenses.length;
+    const expenseObj = { id, ...this.state };
+    dispatchSetExpenses(expenseObj);
+    this.setState({
+      value: 0,
+      description: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+    });
   }
 
   render() {
@@ -28,7 +57,7 @@ class ExpenseForm extends Component {
         tag,
       },
       props: {
-        userCurrencies,
+        getCurrentCurrencies,
       },
       handleChange,
       handleClick,
@@ -55,19 +84,20 @@ class ExpenseForm extends Component {
             onChange={ handleChange }
           />
           <label htmlFor="currency-input">
+            Moeda
             <select
               data-testid="currency-input"
               type="select"
               name="currency"
               id="currency-input"
-              placeholder="Moeda"
               value={ currency }
               onChange={ handleChange }
             >
-              { userCurrencies.map((coin, index) => (
+              { getCurrentCurrencies.map((coin, index) => (
                 <option
                   value={ coin }
                   key={ index }
+                  data-testid={ coin }
                 >
                   { coin }
                 </option>
@@ -75,35 +105,35 @@ class ExpenseForm extends Component {
             </select>
           </label>
           <label htmlFor="method-input">
+            Forma de Pagamento
             <select
               data-testid="method-input"
               type="select"
               name="method"
               id="method-input"
-              placeholder="Método de Pagamento"
               value={ method }
               onChange={ handleChange }
             >
-              <option value="Dinheiro">Dinheiro</option>
-              <option value="Cartão de Débito">Cartão de Débito</option>
-              <option value="Cartão de Crédito">Cartão de Crédito</option>
+              <option>Dinheiro</option>
+              <option>Cartão de débito</option>
+              <option>Cartão de crédito</option>
             </select>
           </label>
           <label htmlFor="tag-input">
+            Despesa
             <select
               data-testid="tag-input"
               type="select"
               name="tag"
               id="tag-input"
-              placeholder="Categoria"
               value={ tag }
               onChange={ handleChange }
             >
-              <option value="Alimentação">Alimentação</option>
-              <option value="Lazer">Lazer</option>
-              <option value="Trabalho">Trabalho</option>
-              <option value="Transporte">Transporte</option>
-              <option value="Saúde">Saúde</option>
+              <option>Alimentação</option>
+              <option>Lazer</option>
+              <option>Trabalho</option>
+              <option>Transporte</option>
+              <option>Saúde</option>
             </select>
           </label>
           <button
@@ -119,10 +149,19 @@ class ExpenseForm extends Component {
 }
 const mapStateToProps = (state) => ({
   userExpenses: state.wallet.expenses,
-  userCurrencies: state.wallet.currencies,
+  getCurrentCurrencies: state.wallet.currencies,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatchSetExpenses: (expenses) => dispatch((currentCurrency(expenses))),
+  dispatchCurrentCurrencies: () => dispatch((getCurrentCurrency())),
 });
 
 ExpenseForm.propTypes = {
-  userCurrencies: PropTypes.arrayOf.isRequired,
+  userExpenses: PropTypes.arrayOf.isRequired,
+  dispatchSetExpenses: PropTypes.func.isRequired,
+  dispatchCurrentCurrencies: PropTypes.arrayOf.isRequired,
+  getCurrentCurrencies: PropTypes.arrayOf.isRequired,
 };
-export default connect(mapStateToProps, null)(ExpenseForm);
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExpenseForm);
